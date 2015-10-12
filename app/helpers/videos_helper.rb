@@ -37,9 +37,13 @@ module VideosHelper
     duration_hash.keys.each_with_index do |key, index|
       order = index.to_i + 1
 
+      expr = key.gsub('m00s', '*60').gsub('m0s', '*60').gsub('m0', '*60+').gsub('m', '*60+').gsub('s', '')
+      puts "[#{expr}]"
+      start_time_in_sec = eval(expr)
+
       total += "\n<hr>#{order}/#{duration_hash.size}: #{key}"
       total += "<br>"
-      total += video_tag("/en_rails_stukio_ajax.mp4", width: '320', height: '240', controls: true)
+      total += video_tag("/en_rails_stukio_ajax.mp4\#t=#{start_time_in_sec}", width: '320', height: '240', controls: true)
     end
     total
   end
